@@ -1,0 +1,13 @@
+<div class="container mt-4">
+    <div class="row" *ngIf="users.length">
+        <div *ngFor="let user of users" class="col-lg-4 col-md-6 col-12 mb-2">
+            <button class="btn btn-outline-dark custom-btn w-100" (click)="sendMsg(user)">
+                <span class="userCircle">{{user.name[0]}}</span>
+                <span class="username">{{ user.name }}</span>
+            </button>
+        </div>
+    </div>
+    <div *ngIf="!users.length">
+        <h1>No users defined</h1>
+    </div>
+</div>

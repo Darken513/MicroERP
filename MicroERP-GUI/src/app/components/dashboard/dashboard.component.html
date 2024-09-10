@@ -1,0 +1,253 @@
+<div class="adminSwitchHolder">
+    <i class="fa-solid fa-user" (click)="navigateToHomePage()"></i>
+</div>
+<div class="container mt-4">
+    <div class="modal fade modal-lg" [ngClass]="{ 'show': showModal }" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" *ngIf="restaurantModal">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ isEditing ? 'Edit Restaurant' : 'Add Restaurant' }}</h5>
+                    <button type="button" class="btnClose" (click)="closeModal()" aria-label="Close"><i
+                            class="fa fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="restaurantForm" (ngSubmit)="isEditing ? updateRestaurant() : addRestaurant()">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="name" class="form-label">Name:</label>
+                                <input type="text" placeholder="Name" id="name" class="form-control"
+                                    formControlName="name"
+                                    [class.is-invalid]="!restaurantForm.get('name')?.valid && restaurantForm.get('name')?.touched" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning w-100">{{ isEditing ? 'Update Restaurant' : 'Add Restaurant' }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-content" *ngIf="userModal">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ isEditing ? 'Edit User' : 'Add User' }}</h5>
+                    <button type="button" class="btnClose" (click)="closeModal()" aria-label="Close"><i
+                            class="fa fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="userForm" (ngSubmit)="isEditing ? updateUser() : addUser()">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="name" class="form-label">Name:</label>
+                                <input type="text" placeholder="Name" id="name" class="form-control"
+                                    formControlName="name"
+                                    [class.is-invalid]="!userForm.get('name')?.valid && userForm.get('name')?.touched" />
+                            </div>
+                            <div class="col mb-3">
+                                <label for="code" class="form-label">Code:</label>
+                                <input type="number" placeholder="Code" id="code" class="form-control"
+                                    formControlName="code"
+                                    [class.is-invalid]="!userForm.get('code')?.valid && userForm.get('code')?.touched" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning w-100">{{ isEditing ? 'Update User' : 'Add User' }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-content" *ngIf="stockItemModal">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ isEditing ? 'Edit StockItem' : 'Add StockItem' }}</h5>
+                    <button type="button" class="btnClose" (click)="closeModal()" aria-label="Close"><i
+                            class="fa fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="stockItemForm" (ngSubmit)="isEditing ? updateStockItem() : addStockItem()">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="name" class="form-label">Name:</label>
+                                <input type="text" placeholder="Name" id="name" class="form-control"
+                                    formControlName="name"
+                                    [class.is-invalid]="!stockItemForm.get('name')?.valid && stockItemForm.get('name')?.touched" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label for="minimum" class="form-label">Minimum:</label>
+                                <input type="number" placeholder="Minimum" id="minimum" class="form-control"
+                                    formControlName="minimum"
+                                    [class.is-invalid]="!stockItemForm.get('minimum')?.valid && stockItemForm.get('minimum')?.touched" />
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label for="restaurant" class="form-label">Restaurant:</label>
+                                <select id="restaurant" class="form-control form-select" formControlName="restaurant"
+                                    [class.is-invalid]="!stockItemForm.get('restaurant')?.valid && stockItemForm.get('restaurant')?.touched">
+                                    <option value="" selected disabled>Select a restaurant</option>
+                                    <option *ngFor="let restaurant of restaurants" [value]="restaurant.id">
+                                        {{restaurant.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning w-100">{{ isEditing ? 'Update StockItem' : 'Add StockItem' }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="custom-accordian">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 accordianTitle"><span>Restaurants</span> List</h4>
+                <div>
+                    <button *ngIf="restaurantsAccordianOn" class="btn btn-warning addBtn" (click)="openModal('restaurants')">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button class="arrowIcon" (click)="openAccordian('restaurants')"
+                        [ngStyle]="{'transform':restaurantsAccordianOn?'rotate(90deg)':'rotate(0deg)'}">
+                        <i class="fa-solid fa-circle-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-4 accordian-content"
+            [ngClass]="{'accordianOn':restaurantsAccordianOn, 'accordianOff':!restaurantsAccordianOn}">
+            <!-- Card System for Low Resolution -->
+            <div class="accordian-innerContent">
+                <div class="row" *ngIf="restaurants.length">
+                    <div *ngFor="let restaurant of restaurants"
+                        class="col-sm-6 col-12 text-light custom-card-wrapper">
+                        <div class="custom-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5>{{ restaurant.name }}</h5>
+                                <div>
+                                    <button class="btn btn-warning" (click)="editRestaurant(restaurant)" style="margin-right: 5px;">
+                                        <i class="fas fa-edit"></i>
+                                      </button>
+                                    <button class="btn btn-danger"
+                                        (click)="deleteRestaurant(restaurant.id)">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!restaurants.length">
+                    <h3 class="emptyList">No Restaurants defined</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="custom-accordian">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 accordianTitle"><span>Users</span> List</h4>
+                <div>
+                    <button *ngIf="usersAccordianOn" class="btn btn-warning addBtn" (click)="openModal('users')">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button class="arrowIcon" (click)="openAccordian('users')"
+                        [ngStyle]="{'transform':usersAccordianOn?'rotate(90deg)':'rotate(0deg)'}">
+                        <i class="fa-solid fa-circle-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-4 accordian-content"
+            [ngClass]="{'accordianOn':usersAccordianOn, 'accordianOff':!usersAccordianOn}">
+            <!-- Card System for Low Resolution -->
+            <div class="accordian-innerContent" style="padding: 0;">
+                <table class="table table-dark table-striped table-bordered text-dark">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th style="width: 7rem;">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let user of users">
+                        <td><span style="color:#ffc107;">{{ user.name }}</span></td>
+                        <td>{{ user.code }}</td>
+                        <td>
+                          <button class="btn btn-warning" (click)="editUser(user)" style="margin-right: 5px;">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button class="btn btn-danger" (click)="deleteUser(user.id)">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="!users.length">
+                    <h3 class="emptyList">No Users defined</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="custom-accordian">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 accordianTitle"><span>StockItems</span> List</h4>
+                <div>
+                    <button *ngIf="stockItemsAccordianOn" class="btn btn-warning addBtn" (click)="openModal('stockItems')">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <select *ngIf="stockItemsAccordianOn" id="restaurant" class="restaurant-filter" (change)="onFilterChange($event)">
+                        <option value="" selected disabled>Filter by restaurant</option>
+                        <option value="All">All</option>
+                        <option *ngFor="let restaurant of restaurants" [value]="restaurant.id">
+                            {{restaurant.name}}
+                        </option>
+                    </select>
+                    <button class="arrowIcon" (click)="openAccordian('stockItems')"
+                        [ngStyle]="{'transform':stockItemsAccordianOn?'rotate(90deg)':'rotate(0deg)'}">
+                        <i class="fa-solid fa-circle-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-4 accordian-content"
+            [ngClass]="{'accordianOn':stockItemsAccordianOn, 'accordianOff':!stockItemsAccordianOn}">
+            <!-- Card System for Low Resolution -->
+            <div class="accordian-innerContent" style="padding: 0;">
+                <div *ngIf="displayedStockItems.length">
+                    <table class="table table-dark table-striped table-bordered text-dark">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Restaurant</th>
+                            <th style="width: 6rem;">Minimum</th>
+                            <th style="width: 7rem;">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let stockItem of displayedStockItems" [class.confNok]="stockItem.confNok">
+                            <td><span style="color:#ffc107;">{{ stockItem.name }}</span></td>
+                            <td [ngStyle]="{'color': getRestaurantById(stockItem.restaurant) === 'NOK' ? 'red' : 'white'}">
+                              {{ getRestaurantById(stockItem.restaurant) }}
+                            </td>
+                            <td>{{ stockItem.minimum }}</td>
+                            <td>
+                              <button class="btn btn-warning" (click)="editStockItem(stockItem)" style="margin-right: 5px;">
+                                <i class="fas fa-edit"></i>
+                              </button>
+                              <button class="btn btn-danger" (click)="deleteStockItem(stockItem.id)">
+                                <i class="fas fa-trash-alt"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="!displayedStockItems.length">
+                    <h3 class="emptyList">No StockItems defined</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
