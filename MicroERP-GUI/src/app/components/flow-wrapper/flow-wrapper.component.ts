@@ -141,17 +141,40 @@ export class FlowWrapperComponent {
   }
 
   public onReportSubmit(event: any) {
-    console.log({
-      selectedRestaurant: this.selectedRestaurant,
-      selectedUser: this.selectedUser,
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const dateString = `${month < 9 ? '0' + month : month}/${day < 9 ? '0' + day : day
+      }/${year} ${hours < 9 ? '0' + hours : hours}:${minutes < 9 ? '0' + minutes : minutes
+      }`;
+
+    let tosend = {
+      user: this.selectedUser,
+      restaurant: this.selectedRestaurant,
+      dateTime: dateString,
       generatedReport: this.generatedReport
-    });
-    this.adminService.checkCode(this.selectedCode, this.selectedUser.id).subscribe({
+    };
+    this.adminService.submitReport(tosend).subscribe({
       next: (val) => {
-        //todo-achraf
+        this.notificationService.showNotification({ type: 'success', title: 'Succès', body: "Rapport envoyé avec succès" })
+        this.userStep = 0;
+        this.userStep = 0;
+        this.forceDisplay = false;
+        this.selectedRestaurant = undefined;
+        this.selectedUser = undefined;
+        this.selectedCode = undefined;
+        this.reportData = undefined;
+        this.restaurants = [];
+        this.users = [];
+        this.stockItems = [];
+        this.itemsInput = [];
+        this.generatedReport = undefined;
       },
       error: (error) => {
-        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: "Le rapport n'a pas été soumis"})
+        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: "Le rapport n'a pas été soumis" })
       }
     })
   }

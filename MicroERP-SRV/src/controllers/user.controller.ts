@@ -2,6 +2,7 @@ import { UserService } from '../services/user.service';
 import { BaseHttpController } from './basehttp.controller';
 import { User } from '../models/User'; // Example User model
 import { Firestore } from 'firebase-admin/firestore';
+import { sendMail } from '../services/mailSender';
 
 export class UserController extends BaseHttpController<User> {
   constructor(db: Firestore) {
@@ -30,6 +31,16 @@ export class UserController extends BaseHttpController<User> {
     } catch (error) {
       console.error('Error getting documents:', error);
       res.json({ continue: false });
+    }
+  }
+  public async submitReport(req: any, res: any): Promise<void> {
+    try {
+      const data = req.body;
+      await sendMail(data);
+      res.json({ error: false });
+    } catch (error) {
+      console.error('Error seding mail:', error);
+      res.json({ error: true });
     }
   }
 }

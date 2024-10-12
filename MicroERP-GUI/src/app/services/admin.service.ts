@@ -54,4 +54,8 @@ export class AdminService {
   public checkCode(code: string, id: string): Observable<any> {
     return this.http.get<{ response: any }>(`${this.apiUrl}/users/checkCode/${id}/${code}`);
   }
+
+  public submitReport(data: any): Observable<any> {
+    return this.http.post<{ response: any }>(`${this.apiUrl}/users/submitReport`, data);
+  }
 }
