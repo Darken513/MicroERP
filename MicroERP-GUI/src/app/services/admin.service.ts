@@ -15,8 +15,8 @@ export class AdminService {
   public getAllRestaurants(): Observable<any> {
     return this.http.get<{ response: any }>(`${this.apiUrl}/restaurants/getAll`);
   }
-  public getAllUsers(): Observable<any> {
-    return this.http.get<{ response: any }>(`${this.apiUrl}/users/getAll`);
+  public getAllUsers(hideCode?: boolean): Observable<any> {
+    return this.http.get<{ response: any }>(`${this.apiUrl}/users/getAll/${hideCode ? 'secret' : ''}`);
   }
   public getAllStockItems(): Observable<any> {
     return this.http.get<{ response: any }>(`${this.apiUrl}/stockItems/getAll`);
@@ -49,5 +49,9 @@ export class AdminService {
   }
   public updateStockItemById(def: any, id: string): Observable<any> {
     return this.http.put<{ response: any }>(`${this.apiUrl}/stockItems/updateById/${id}`, def);
+  }
+
+  public checkCode(code: string, id: string): Observable<any> {
+    return this.http.get<{ response: any }>(`${this.apiUrl}/users/checkCode/${id}/${code}`);
   }
 }

@@ -1,0 +1,7 @@
+<div *ngIf="displayGoBackBtn()" class="adminSwitchHolder">
+    <i class="fa fa-solid fa-arrow-left" aria-hidden="true" (click)="goBackToPrevStep()"></i>
+</div>
+<p style="text-align: center; width: 300px; margin: auto">Saisir le nombre d'articles restants dans le stock</p>
+<h1 style="text-align: center; font-size: 4.5rem; width: 300px; margin: auto; margin-top: 1rem; color: yellowgreen;">
+    {{itemsOutput[currIdx].name}}</h1>
+<app-code-key-input (onEvent)="onValueSelectionEvent($event)" [params]="codeParams"></app-code-key-input>

@@ -14,7 +14,7 @@ export abstract class BaseHttpController<T> {
       res.json({ defs });
     } catch (error) {
       console.error('Error getting documents:', error);
-      res.status(500).json({ title: 'Error', body: 'No Data available.' });
+      res.status(500).json({ title: 'Error', body: 'Pas de données disponibles.' });
     }
   }
 
@@ -22,13 +22,13 @@ export abstract class BaseHttpController<T> {
     try {
       const def = await this.service.getById(req.params.id);
       if (!def) {
-        res.status(404).json({ title: 'Error', body: 'Item not found.' });
+        res.status(404).json({ title: 'Erreur', body: "L'article n'a pas été trouvé." });
       } else {
         res.json({ def });
       }
     } catch (error) {
       console.error('Error getting document:', error);
-      res.status(500).json({ title: 'Error', body: 'No Data available.' });
+      res.status(500).json({ title: 'Erreur', body: 'Pas de données disponibles.' });
     }
   }
 

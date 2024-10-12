@@ -11,3 +11,8 @@
 <app-users-list [users]="users" *ngIf="userStep == 1" (onEvent)="onUserSelectionEvent($event)"></app-users-list>
 
 <app-code-key-input *ngIf="userStep == 2" (onEvent)="onCodeSelectionEvent($event)"></app-code-key-input>
+
+<app-items-chain *ngIf="userStep == 3" [itemsInput]="itemsInput" [generatedReport]="generatedReport"
+    (onEvent)="onItemChainEvent($event)"></app-items-chain>
+
+<app-generated-report *ngIf="userStep == 4" [generatedReport]="generatedReport" (onEvent)="onReportSubmit($event)"></app-generated-report>

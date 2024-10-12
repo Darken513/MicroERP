@@ -12,6 +12,8 @@ import { CodeKeyInputComponent } from './components/code-key-input/code-key-inpu
 import { FlowWrapperComponent } from './components/flow-wrapper/flow-wrapper.component';
 import { UsersListComponent } from './components/users-list/users-list.component';
 import { RestaurantsListComponent } from './components/restaurants-list/restaurants-list.component';
+import { ItemsChainComponent } from './components/items-chain/items-chain.component';
+import { GeneratedReportComponent } from './components/generated-report/generated-report.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { RestaurantsListComponent } from './components/restaurants-list/restaura
     CodeKeyInputComponent,
     FlowWrapperComponent,
     RestaurantsListComponent,
-    UsersListComponent
+    UsersListComponent,
+    ItemsChainComponent,
+    GeneratedReportComponent
   ],
   imports: [
     BrowserModule,

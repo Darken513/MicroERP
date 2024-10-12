@@ -74,7 +74,7 @@ export class DashboardComponent {
         this.initUsersList();
       },
       error: (error) => {
-        this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error fetching Restaurants' })
+        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Erreur lors de la récupération des restaurants' })
         this.initUsersList();
       }
     })
@@ -93,7 +93,7 @@ export class DashboardComponent {
         this.initStockItemsList();
       },
       error: (error) => {
-        this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error fetching Users' })
+        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Erreur lors de la récupération des Utilisateurs' })
         this.initStockItemsList();
       }
     })
@@ -112,7 +112,7 @@ export class DashboardComponent {
         }
       },
       error: (error: any) => {
-        this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error fetching Stock Items' })
+        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Erreur lors de la récupération des articles' })
       }
     })
   }
@@ -183,7 +183,7 @@ export class DashboardComponent {
           }
         },
         error: (error) => {
-          this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error creating new "Restaurant"' })
+          this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: "Erreur lors de la création d'un nouveau « Restaurant »" })
         }
       })
       this.closeModal();
@@ -202,7 +202,7 @@ export class DashboardComponent {
           }
         },
         error: (error) => {
-          this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error creating new "User"' })
+          this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: "Erreur lors de la création d'un nouveau « Utilisateur »" })
         }
       })
       this.closeModal();
@@ -221,7 +221,7 @@ export class DashboardComponent {
           }
         },
         error: (error) => {
-          this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error creating new "StockItem"' })
+          this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: "Erreur lors de la création d'un nouveau « Article »" })
         }
       })
       this.closeModal();
@@ -273,7 +273,7 @@ export class DashboardComponent {
             }
           },
           error: (error) => {
-            this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error Updating "Restaurant"' })
+            this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Erreur de mise à jour de « Restaurant »' })
           }
         })
       }
@@ -297,7 +297,7 @@ export class DashboardComponent {
             }
           },
           error: (error) => {
-            this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error Updating "User"' })
+            this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Erreur de mise à jour de « Utilisateur »' })
           }
         })
       }
@@ -321,7 +321,7 @@ export class DashboardComponent {
             }
           },
           error: (error) => {
-            this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error Updating "StockItem"' })
+            this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Erreur de mise à jour de « Article »' })
           }
         })
       }
@@ -353,7 +353,7 @@ export class DashboardComponent {
         }
       },
       error: (error) => {
-        this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error deleting "Restaurant"' })
+        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Erreur lors de la suppression de « Restaurant »' })
       }
     })
   }
@@ -365,7 +365,7 @@ export class DashboardComponent {
         }
       },
       error: (error) => {
-        this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error deleting "User"' })
+        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Erreur lors de la suppression de « Utilisateur »' })
       }
     })
   }
@@ -377,7 +377,7 @@ export class DashboardComponent {
         }
       },
       error: (error) => {
-        this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error deleting "StockItem"' })
+        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Erreur lors de la suppression de « Article »' })
       }
     })
   }

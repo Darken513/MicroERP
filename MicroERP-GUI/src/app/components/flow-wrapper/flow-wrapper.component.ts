@@ -11,6 +11,7 @@ import { NotificationService } from '../../services/notification.service';
 })
 export class FlowWrapperComponent {
   public userStep: number = 0;
+  public forceDisplay: boolean = false;
   public selectedRestaurant: any;
   public selectedUser: any;
   public selectedCode: any;
@@ -18,6 +19,8 @@ export class FlowWrapperComponent {
   public restaurants: any[] = [];
   public users: any[] = [];
   public stockItems: any[] = [];
+  public itemsInput: any[] = [];
+  public generatedReport: any;
 
   constructor(
     private adminService: AdminService,
@@ -41,13 +44,13 @@ export class FlowWrapperComponent {
         this.initUsersList();
       },
       error: (error) => {
-        this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error fetching Restaurants' })
+        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Erreur lors de la récupération des restaurants' })
         this.initUsersList();
       }
     })
   }
   initUsersList() {
-    this.adminService.getAllUsers().subscribe({
+    this.adminService.getAllUsers(true).subscribe({
       next: (val) => {
         if (val.title != "error") {
           this.users = val.defs;
@@ -55,7 +58,7 @@ export class FlowWrapperComponent {
         this.initStockItemsList();
       },
       error: (error) => {
-        this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error fetching Users' })
+        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Erreur lors de la récupération des Utilisateurs' })
         this.initStockItemsList();
       }
     })
@@ -68,7 +71,7 @@ export class FlowWrapperComponent {
         }
       },
       error: (error: any) => {
-        this.notificationService.showNotification({ type: 'error', title: 'error', body: 'Error fetching Stock Items' })
+        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Erreur lors de la récupération des articles' })
       }
     })
   }
@@ -80,10 +83,17 @@ export class FlowWrapperComponent {
   public goBackToPrevStep() {
     if (this.userStep) {
       this.userStep -= 1;
+      this.forceDisplay = false;
+      if (this.userStep == 3) {
+        this.forceDisplay = true;
+      }
     }
   }
   public displayGoBackBtn() {
-    if (this.userStep == 4) {
+    if (this.forceDisplay) {
+      return true
+    }
+    if (this.userStep == 3) {
       return false;
     } else {
       return this.userStep != 0;
@@ -102,39 +112,47 @@ export class FlowWrapperComponent {
 
   public onCodeSelectionEvent(event: any) {
     this.selectedCode = event;
-    let topost = {
-      restaurant: this.selectedRestaurant,
-      user: {
-        id: this.selectedUser.id,
-        name: this.selectedUser.name,
-        code: this.selectedCode,
-      },
-      currentTime: new Date(),
-    }
-    /* this.userService.checkCodeAndSubmitAction(topost).subscribe({
+    this.adminService.checkCode(this.selectedCode, this.selectedUser.id).subscribe({
       next: (val) => {
-        if (val.title == "error") {
-          this.notifService.showNotification(val.title, val.body);
-          return;
+        if (val.continue) {
+          this.userStep += 1;
+          this.forceDisplay = true;
+          this.generatedReport = undefined;
+          this.itemsInput = this.stockItems.filter(d => this.selectedRestaurant.id == d.restaurant)
+        } else {
+          this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Code incorrect' })
         }
-        this.reportData = {
-          restaurant: this.selectedRestaurant,
-          user: this.selectedUser,
-          vehicles: this.vehicles,
-          docId: val.id,
-          actionDone: this.selectedAction!.checkkingIn ? 'Pointage' : 'Depointage',
-          currentTime: new Date(),
-        };
-        this.userStep += 1;
-        setTimeout((val: any) => {
-          if (val == 'Pointage') {
-            this.onReportEvent()
-          }
-        }, 5000, this.selectedAction!.checkkingIn ? 'Pointage' : 'Depointage');
       },
       error: (error) => {
-        console.log(error);
+        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: 'Code incorrect' })
       }
-    }) */
+    })
+  }
+
+  public onItemChainEvent(event: any) {
+    if (event.step0) {
+      this.forceDisplay = true;
+    } else if (event.notStep0) {
+      this.forceDisplay = false;
+    } else if (event.generatedReport) {
+      this.generatedReport = event.generatedReport;
+      this.userStep += 1;
+    }
+  }
+
+  public onReportSubmit(event: any) {
+    console.log({
+      selectedRestaurant: this.selectedRestaurant,
+      selectedUser: this.selectedUser,
+      generatedReport: this.generatedReport
+    });
+    this.adminService.checkCode(this.selectedCode, this.selectedUser.id).subscribe({
+      next: (val) => {
+        //todo-achraf
+      },
+      error: (error) => {
+        this.notificationService.showNotification({ type: 'error', title: 'Erreur', body: "Le rapport n'a pas été soumis"})
+      }
+    })
   }
 }

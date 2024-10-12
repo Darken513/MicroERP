@@ -1,7 +1,9 @@
 <div class="container mt-4">
     <div class="numpadHolder">
         <div class="row mt-2">
-            <input type="password" placeholder="----" class="form-control mb-2 col-12" [(ngModel)]="enteredCode" readonly>
+            <input [type]="params && params.clear ? 'number' : 'password'"
+                [placeholder]="params && params.placeholder ? params.placeholder : '----'"
+                class="form-control mb-2 col-12" [(ngModel)]="enteredCode" readonly>
         </div>
         <div class="row">
             <div *ngFor="let digit of digits" class="col-4">
@@ -23,7 +25,8 @@
             </div>
         </div>
         <div class="row mt-2">
-            <button class="btn btn-outline-dark m-2 custom-btn col-12" (click)="sendMsg()">Valider</button>
+            <button class="btn btn-outline-dark m-2 custom-btn col-12" (click)="sendMsg()">{{params && params.submitTxt
+                ? params.submitTxt: 'Valider'}}</button>
         </div>
     </div>
 </div>

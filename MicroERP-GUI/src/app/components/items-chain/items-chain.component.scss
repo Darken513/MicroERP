@@ -1,0 +1,39 @@
+:host ::ng-deep .numpad-btn {
+  background-color: transparent !important;
+  width: 100% !important;
+  font-weight: 700 !important;
+  padding: 0.7rem !important;
+  margin: 2px !important;
+  color: #dee2e6 !important;
+  font-size: 2rem !important;
+  border: 1px solid #dee2e6 !important;
+}
+
+:host ::ng-deep input {
+  background: transparent !important;
+  color: white !important;
+  height: 5rem !important;
+  font-size: 3rem !important;
+  letter-spacing: 0.5rem !important;
+  text-align: center !important;
+}
+
+:host ::ng-deep .numpadHolder {
+  max-width: 300px !important;
+}
+
+:host ::ng-deep .custom-btn {
+  background-color: #2acf6c;
+}
+
+.adminSwitchHolder {
+  padding: 2rem 0 0 2rem;
+}
+.adminSwitchHolder i.fa-solid {
+  background: #ffc107;
+  color: #0a0e16;
+  padding: 0.9rem 1.1rem 0.9rem 1.1rem;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
